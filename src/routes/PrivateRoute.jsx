@@ -5,9 +5,8 @@ import { useAuth } from "../context/useAuth";
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
   const { isLoggedIn } = useAuth();
-  console.log("isLoggedIn", isLoggedIn());
   return isLoggedIn() ? (
-    <>{children}</>
+    children
   ) : (
     <Navigate to="/signIn" state={{ from: location }} replace />
   );

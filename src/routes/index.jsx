@@ -4,6 +4,7 @@ import SignIn from "../Components/auth/SignIn";
 import SignUp from "../Components/auth/SignUp";
 import Home from "../pages/Home";
 import ProtectedRoute from "./PrivateRoute";
+import About from "../pages/About";
 
 export const router = createBrowserRouter([
   {
@@ -13,7 +14,7 @@ export const router = createBrowserRouter([
       { path: "signIn", element: <SignIn /> },
       { path: "signUp", element: <SignUp /> },
       {
-        path: "home",
+        path: "/",
         element: (
           <ProtectedRoute>
             {" "}
@@ -22,8 +23,13 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "company/:ticker",
-        element: <ProtectedRoute>{/* <CompanyPage /> */}</ProtectedRoute>,
+        path: "about",
+        element: (
+          <ProtectedRoute>
+            {" "}
+            <About />{" "}
+          </ProtectedRoute>
+        ),
       },
     ],
   },

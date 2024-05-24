@@ -2,7 +2,6 @@ import React, { createContext, useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { loginAPI, registerAPI } from "../services/AuthService";
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
@@ -29,6 +28,24 @@ export const UserProvider = ({ children }) => {
     setIsReady(true);
   }, []);
 
+  function getSignInAuthErrorMessage(authCode) {
+    if (authCode === "auth/invalid-email") {
+      return "Email provided is invalid";
+    } else if (authCode === "auth/user-disabled") {
+      return "User account has been disabled";
+    } else if (authCode === "auth/user-not-found") {
+      return "No user found with the provided email";
+    } else if (authCode === "auth/wrong-password") {
+      return "The password is invalid or the user does not have a password";
+    } else if (authCode === "auth/too-many-requests") {
+      return "Too many requests. Try again later";
+    } else if (authCode === "auth/operation-not-allowed") {
+      return "Operation not allowed. Please enable this sign-in method in the Firebase console";
+    } else {
+      return authCode;
+    }
+  }
+
   const registerUser = async (auth, email, name, password) => {
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
@@ -41,14 +58,22 @@ export const UserProvider = ({ children }) => {
           name: res.user.displayName,
           email: res.user.email,
         };
-        setUser(userObj);
-        localStorage.setItem("token", res.data.token);
-        setToken(res.data.token);
+        setUser(res.user.providerData[0]);
+        localStorage.setItem("token", res.user.accessToken);
+        setToken(res.user.accessToken);
         toast.success("Registration Success!");
-        navigate("/home");
+        navigate("/");
       }
     } catch (error) {
-      toast.warning("Server error occurred");
+      if (error.code == "auth/email-already-in-use") {
+        toast.warning("The email address is already in use");
+      } else if (error.code == "auth/invalid-email") {
+        toast.warning("The email address is not valid.");
+      } else if (error.code == "auth/operation-not-allowed") {
+        toast.warning("Operation not allowed.");
+      } else if (error.code == "auth/weak-password") {
+        toast.warning("The password is too weak.");
+      }
     }
   };
 
@@ -61,11 +86,12 @@ export const UserProvider = ({ children }) => {
         email: res.user.email,
       };
       setToken(res.user.accessToken);
-      setUser(userObj);
+      setUser(res.user.providerData[0]);
       toast.success("Login Success!");
-      navigate("/home");
+      navigate("/");
     } catch (error) {
-      toast.warning("Server error occurred");
+      const errorMessage = getSignInAuthErrorMessage(error.code);
+      toast.warning(errorMessage);
     }
   };
 
@@ -75,17 +101,15 @@ export const UserProvider = ({ children }) => {
       const res = await signInWithPopup(auth, provider);
       if (res) {
         localStorage.setItem("token", res.user.accessToken);
-        const userObj = {
-          name: res.user.displayName,
-          email: res.user.email,
-        };
+
         setToken(res.user.accessToken);
-        setUser(userObj);
+        setUser(res.user.providerData[0]);
         toast.success("Login Success!");
-        navigate("/home");
+        navigate("/");
       }
     } catch (error) {
-      toast.warning("Server error occurred");
+      const errorMessage = getSignInAuthErrorMessage(error.code);
+      toast.warning(errorMessage);
     }
   };
 
