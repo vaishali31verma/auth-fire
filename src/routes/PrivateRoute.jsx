@@ -1,15 +1,15 @@
-import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/useAuth';
+import React from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "../context/useAuth";
 
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
   const { isLoggedIn } = useAuth();
-
+  console.log("isLoggedIn", isLoggedIn());
   return isLoggedIn() ? (
     <>{children}</>
   ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
+    <Navigate to="/signIn" state={{ from: location }} replace />
   );
 };
 
