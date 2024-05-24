@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/useAuth";
 
 const Navbar = () => {
+  const { logout,user } = useAuth();
+  
   return (
     <nav className="bg-blue-500 p-4">
       <div className="container mx-auto flex justify-between items-center">
@@ -32,7 +35,7 @@ const Navbar = () => {
             Contact
           </Link>
           <button
-            onClick={() => {}}
+            onClick={logout}
             className="text-white hover:bg-blue-700 px-3 py-2 rounded"
           >
             Sign Out

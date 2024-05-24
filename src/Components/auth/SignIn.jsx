@@ -3,10 +3,10 @@ import React, { useState } from "react";
 // import { auth } from "../../firebase";
 import { GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../../firebase";
+import {  useAuth } from "../../context/useAuth";
 
 const SignIn = () => {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
+  const {loginGoogleUser,loginUser} = useAuth()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -14,27 +14,9 @@ const SignIn = () => {
 
   const signIn = (e) => {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, formData.email, formData.password)
-      .then((userCredential) => {
-        console.log("userCredential", userCredential);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    loginUser(auth, formData.email, formData.password)
   };
-  const signInWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      const response = await signInWithPopup(auth, provider);
-      // const data = await response.json();
-      console.log("data", response);
 
-      // Sign-in successful, do something (e.g., navigate to another page)
-    } catch (error) {
-      console.error("Error signing in with Google:", error.message);
-      // Handle error appropriately (e.g., show error message to user)
-    }
-  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -112,7 +94,7 @@ const SignIn = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={signInWithGoogle}
+                    onClick={loginGoogleUser}
                     class="transition-colors focus:ring-2 p-0.5 disabled:cursor-not-allowed bg-white hover:bg-gray-100 text-gray-900 border border-gray-200 disabled:bg-gray-300 disabled:text-gray-700 rounded-lg "
                   >
                     <span class="flex items-center justify-center gap-1 font-medium py-1 px-2.5 text-base false">
