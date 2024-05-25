@@ -5,8 +5,8 @@ const About = () => {
   const { user } = useAuth();
 
   return (
-    <main className="container mx-auto px-6 py-8 mt-[60px]">
-      <section className="bg-white p-6 rounded-lg shadow-lg">
+    <main className="container h-[calc(100vh-6rem)] mx-auto px-6 py-8 mt-[60px]">
+      <section className="bg-white p-6 rounded-lg shadow-lg h-full">
         <h2 className="text-2xl font-bold mb-4">About Us</h2>
         <p className="text-gray-700 mb-4">
           Meet our dedicated professional who leads our team.
