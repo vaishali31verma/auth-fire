@@ -1,9 +1,6 @@
-import { useAuth } from "../context/useAuth";
 import React from "react";
 
 const Home = () => {
-  const { logout, user } = useAuth();
-
   const cardsData = [
     {
       title: "Service 1",

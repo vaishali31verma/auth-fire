@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
 
 const Navbar = () => {
-  const { logout, user } = useAuth();
+  const { logout } = useAuth();
   const [toggle, setToggle] = useState(false);
   const showNav = () => {
     setToggle(!toggle);

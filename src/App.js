@@ -1,7 +1,5 @@
 
-import { ToastContainer } from "react-toastify";
 import "./App.css";
-
 import { UserProvider } from "./context/useAuth";
 import RootLayout from "./layout/Rootlayout";
 

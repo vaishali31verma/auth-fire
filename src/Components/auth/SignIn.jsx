@@ -1,6 +1,4 @@
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import React, { useState } from "react";
-import { GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useAuth } from "../../context/useAuth";
 import { object, string } from "yup";
