@@ -1,7 +1,6 @@
 import React, { createContext, useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import axios from "axios";
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
@@ -23,7 +22,6 @@ export const UserProvider = ({ children }) => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
-      axios.defaults.headers.common["Authorization"] = "Bearer " + storedToken;
     }
     setIsReady(true);
   }, []);
@@ -54,10 +52,6 @@ export const UserProvider = ({ children }) => {
         await updateProfile(user, {
           displayName: name,
         });
-        const userObj = {
-          name: res.user.displayName,
-          email: res.user.email,
-        };
         setUser(res.user.providerData[0]);
         localStorage.setItem("token", res.user.accessToken);
         setToken(res.user.accessToken);
@@ -81,10 +75,6 @@ export const UserProvider = ({ children }) => {
     try {
       const res = await signInWithEmailAndPassword(auth, email, password);
       localStorage.setItem("token", res.user.accessToken);
-      const userObj = {
-        name: res.user.displayName,
-        email: res.user.email,
-      };
       setToken(res.user.accessToken);
       setUser(res.user.providerData[0]);
       toast.success("Login Success!");
